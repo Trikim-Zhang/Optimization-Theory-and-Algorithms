@@ -1,0 +1,52 @@
+% \documentclass[lang=cn,newtx,10pt,scheme=chinese]{elegantbook}
+\documentclass[lang=cn,10pt,citestyle=gb7714-2015, bibstyle=gb7714-2015]{elegantbook}
+\title{凸分析基础与梯度型算法}
+\subtitle{课后习题和复习}
+\author{张鑫航}
+\institute{国防科技大学}
+\date{\zhtoday}
+\version{1.0}
+\bioinfo{联系方式}{\href{mailto:zhangxinhang19@foxmail.com}{zhangxinhang19@foxmail.com}}
+% \extrainfo{该模板改编自\href{https://github.com/ElegantLaTeX/}{https://github.com/ElegantLaTeX/}}
+\extrainfo{更换校徽为矢量图}
+
+
+\setcounter{chapter}{-1}% 取消注释从第0章开始
+\setcounter{tocdepth}{2}
+
+\logo{logo.pdf}
+\cover{cover.jpg}
+
+\input{resource/preamble}
+
+\addbibresource[location=local]{ref/reference.bib} % 参考文献，不要删除
+
+\begin{document}
+
+\maketitle
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+\input{data/chapter0}
+\input{data/chapter1}
+\input{data/chapter2}
+\input{data/chapter3}
+\input{data/chapter4}
+
+% \input{resource/data/chapter1}
+% \input{resource/data/chapter2}
+% \input{resource/data/chapter3}
+% \input{resource/data/chapter4}
+% \input{resource/data/chapter5}
+% \input{resource/data/chapter6}
+
+\nocite{*}
+
+\printbibliography[heading=bibintoc, title=\ebibname]
+\appendix
+
+\input{resource/data/append}
+
+\end{document}

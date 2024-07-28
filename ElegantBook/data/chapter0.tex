@@ -1,0 +1,209 @@
+\chapter{基础知识}
+\begin{problemset}
+    %------------------%
+    % ------ 1 ------ %
+    %------------------%
+    \item 证明 Cauchy-Schwarz 不等式：
+    \[
+        \langle y,x \rangle \leqslant \| y \| \| x \|, \forall x,y\in \mathbb{R}^{n}
+    \]
+    \begin{proof}
+        若$x=0$或$y = 0$，则结论显然成立。设$x \neq 0$，对任意数$\lambda$，取向量$y-\lambda x$，则有\cite{yangming2006}
+        \[
+            \langle y-\lambda x,y-\lambda x \rangle \geqslant 0
+        \]
+        即$\langle y,y \rangle + \lambda^2\langle x,x \rangle - 2\lambda \langle y,x \rangle \geqslant 0$
+        由$x\neq 0$，可取到
+        \[
+            \lambda = \dfrac{\langle y,x \rangle}{\langle x,x \rangle}
+        \]
+        代入上式，即得
+        \[
+            \langle y,y \rangle\langle x,x \rangle\geqslant (\langle y,x \rangle)^2
+        \]
+        从而有
+        \[
+            \langle y,x \rangle \leqslant \| y \| \| x \|
+        \]
+
+        等式成立的充要条件为
+        \[
+            y-\lambda x = 0
+        \]
+        即$y$和$x$线性相关。证毕！
+    \end{proof}
+
+    \textbf{欧氏距离的三角不等式}：
+    \begin{proof}
+        \[
+            \begin{array}{ll}
+                \langle x+y,x+y \rangle &= \|x\|^2 + \|y\|^{2} + 2\langle x,y \rangle \\
+                &\leqslant  \|x\|^2 + \|y\|^{2} + 2(\|x\|\|y\|)^2\quad \\
+                &=(\|x\| + \|y\|)^2
+            \end{array}
+        \]
+        所以，有$\| x+y \|\leqslant \|x\| + \|y\|$。
+        
+        等式成立的充要条件为$y$和$x$线性相关。证毕！
+    \end{proof}
+    \begin{enumerate}[label=(\roman*)]
+        \item 欧氏范数$\ell_{1}-$范数$\|\cdot\|$的等价性：
+        \[
+            \frac{1}{\sqrt{n}}\|x\| \leqslant \|x\|_{\infty} \leqslant \|x\| \leqslant \|x\|_{1} \leqslant\sqrt{n}\cdot \|x\|_2, \ \forall x\in \mathbb{R}^{n}
+        \]
+        \begin{proof}
+            \[
+                \begin{array}{ll}
+                    \dfrac{1}{\sqrt{n}}\|x\| &= \sqrt{\dfrac{\sum_{i = 1}^{n}x_i^2}{n}}  \leq \sqrt{\dfrac{n x_{\max}^2}{n}} = \|x\|_{\infty}\\
+                    &\leq \sum\limits_{i = 1}^n\sqrt{|x|_i^2} = \|x\|\\
+                    &\leq \sqrt{\sum\limits_{i = 1}^n|x|_i^2+2\sum\limits_{i\neq j}|x|_i|x|_j} = \sqrt{(|x_1|+\cdots+|x_n|)^2} = \|x\|_1\\
+                    &=(1\cdot|x_1|+\cdots+1\cdot|x_n|)\leq \sqrt{n}\cdot\|x\|_2
+                \end{array}
+            \]
+            证毕！
+        \end{proof}
+        \item 对任意的序列$\{a_{j}\}_{j=1}^{n}\subset\mathbb{R}$，均有：
+        \[
+            (\sum_{j=1}^na_j)^2+(\sum_{j=1}^n(-1)^ja_j)^2\leqslant(n+1)\sum_{j=1}^na_j^2.
+        \]
+        \begin{proof}
+            $n = 2m$时，
+            \[
+                \begin{array}{ll}
+                    &\left(\sum\limits_{i = 1}^{n}a_i\right)^2+\left(\sum\limits_{i = 1}^{n}(-1)^{j}a_i\right)^2 = \left(\sum\limits_{i = 1}^{m}a_{2i-1}+\sum\limits_{i = 1}^{m}a_{2i}\right)^2+\left(\sum\limits_{i = 1}^{m}a_{2i}-\sum\limits_{i = 1}^{m}a_{2i-1}\right)^2\\
+                    &=2\left(\sum\limits_{i = 1}^{m}a_{2i-1}\right)^2+2\left(\sum\limits_{i = 1}^{m}a_{2i}\right)^2\text{\color{red}{由柯西不等式}}\\
+                    &\leq 2\cdot m\sum\limits_{i = 1}^{m}a_{2i-1}^2+2\cdot m\sum\limits_{i = 1}^{m}a_{2i}^2\leq (2m+1)\sum\limits_{i = 1}^{2m}a_i^2 = (n+1)\sum\limits_{i = 1}^{n}a_i^2
+                \end{array}
+            \]
+            $n = 2m+1$时，
+            \[
+                \begin{array}{ll}
+                    &\left(\sum\limits_{i = 1}^{n}a_i\right)^2+\left(\sum\limits_{i = 1}^{n}(-1)^{j}a_i\right)^2 = \left(\sum\limits_{i = 1}^{m+1}a_{2i-1}+\sum\limits_{i = 1}^{m}a_{2i}\right)^2+\left(\sum\limits_{i = 1}^{m}a_{2i}-\sum\limits_{i = 1}^{m+1}a_{2i-1}\right)^2\\
+                    &=2\left(\sum\limits_{i = 1}^{m+1}a_{2i-1}\right)^2+2\left(\sum\limits_{i = 1}^{m}a_{2i}\right)^2\text{\color{red}{由柯西不等式}}\\
+                    &\leq 2\cdot (m+1)\sum\limits_{i = 1}^{m}a_{2i-1}^2+2\cdot m\sum\limits_{i = 1}^{m}a_{2i}^2\leq (2m+2)\sum\limits_{i = 1}^{2m+1}a_i^2 = (n+1)\sum\limits_{i = 1}^{n}a_i^2
+                \end{array}
+            \]
+            综上所述，$(\sum_{j=1}^na_j)^2+(\sum_{j=1}^n(-1)^ja_j)^2\leqslant(n+1)\sum_{j=1}^na_j^2$。
+            
+            证毕！
+        \end{proof}
+    \end{enumerate}
+
+    %------------------%
+    % ------ 8 ------ %
+    %------------------%
+    \item 设$A\in \mathbb{R}^{n\times n}$为实对称矩阵，$b\in \mathbb{R}^{n}$。令
+    \[
+        f(x) = x^{\mathrm{T}}Ax-2b^{\mathrm{T}}x.
+    \]
+    证明下述结论等价：
+    \begin{enumerate}[label=(\roman*)]
+        \item $\inf\{f(x):x\in \mathbb{R}^n\}>-\infty$
+        \item $A\succeq 0$且$b \in \operatorname{Im}A$
+        \item $\operatorname{Arg}\min\{f(x):x\in\mathbb{R}^{n}\}\neq \emptyset$
+    \end{enumerate}
+    \begin{proof}
+        $\color{red}{(i)\Rightarrow(ii)}$，首先证明$A\succeq 0$：
+        
+        假设$A\succeq 0$不成立，则$\exists v\in |\mathbb{R}^{n},\,\operatorname{s.t.} v^{\mathrm{T}}Av<0$，那么可以构建极小化序列$x = tv$使得
+        % \[
+        %     x^{\mathrm{T}}Ax = (tv)^{\mathrm{T}}A(t v)=t^{2}v^{\mathrm{T}}A v=t^{2}(v^{T}A v)< 0
+        % \]
+
+        % 那么
+        \[
+            \begin{array}{ll}
+                f(x) &= t^2v^{\mathrm{T}}Av - 2tb^{\mathrm{T}}v\\
+                     &= t(tv^{\mathrm{T}}Av - 2b^{\mathrm{T}}v)
+            \end{array}
+        \]
+
+        那么$f(x)\rightarrow -\infty,\, t\rightarrow \infty$，与$\inf \{f(x):x\in\mathbb{R}^{n}\}> -\infty$矛盾。
+
+        接下来证明$b\in \operatorname{Im}A$：
+
+        假设$b\notin \operatorname{Im}A$，那么$b$可以写为$b = c+d$使得$c\in\operatorname{Im}A,d\in (\operatorname*{Im}A)^{\bot}=\operatorname*{Null}A^{\mathrm{T}}=\operatorname*{Null}A$
+
+        那么可以构建极小化序列$x = kd$使得
+        \[
+            \begin{array}{ll}
+                f(x) &= k^2d^{\mathrm{T}}Ad - 2kb^{\mathrm{T}}d\\
+                &=- 2kc^{\mathrm{T}}d - 2kd^{\mathrm{T}}d\\
+                &=- 2k\|d\|^2
+            \end{array}
+        \]
+        则$f(x)\rightarrow -\infty,\, k\rightarrow \infty$，与$\inf \{f(x):x\in\mathbb{R}^{n}\}> -\infty$矛盾。
+        % 假设$b\notin \operatorname{Im}A$，则矩阵$A$的列向量空间无法生成向量$b$
+
+        % 那么根据列空间的定义，不存在一个向量$c$，使得$b = Ac$。现在令$x = c$，那么有
+        % \[
+        %     f(x) = x^{\mathrm{T}}Ax-2b^{\mathrm{T}}x = c^{\mathrm{T}}Ac-2b^{\mathrm{T}}c
+        % \]
+        % 由于$b\neq Ac$，所以可以选择一个$c$使得$2b^{\mathrm{T}}c>c^{\mathrm{T}}Ac$，使得$f(x)\rightarrow-\infty$。与$(i)$矛盾。
+
+        $\color{red}{(ii)\Rightarrow (i)}$，存在正交阵$P$，$\operatorname{s.t.} A = P^{\mathrm{T}}DP$，其中$D = \operatorname{diag}\{\lambda_1,\cdots,\lambda_n\}$为对角阵，不妨设$\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_n$，则
+        \[
+            f(x) = x^\mathrm{T}P^{\mathrm{T}}DPx-2b^{\mathrm{T}}P^{\mathrm{T}}Px
+        \]
+        令$y = Px$，则$f(x) = g(y) = y^{\mathrm{T}}Dy-2b^{\mathrm{T}}P^{\mathrm{T}}y$
+        
+        设$Pb = (b_1,\cdots,b_n)^{\mathrm{T}}$，则
+        \[
+            g(y) = \sum\limits_{i = 1}^{n}\lambda_iy_i^2-2\sum\limits_{i= 1}^{n}b_iy_i = \sum\limits_{i = 1}^{n}(\lambda_iy_i^2-2b_iy_i)
+        \]
+
+        因为$b\in\operatorname{Im}A$，存在$\alpha\in|\mathbb{R}^n$，$\operatorname{s.t.} Pb = PA\alpha = PP^{\mathrm{T}}DP\alpha = DP\alpha$。由$A\succeq 0$，有$\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_n\geq 0$，那么当$\lambda_i = 0$时，$b_{i} = 0$，故而
+        \[
+            \inf\{f(x):x\in \mathbb{R}^n\}=\inf\{g(y):y\in \mathbb{R}^n\}>-\infty
+        \]
+
+        $\color{red}{(ii)\Rightarrow(iii)}$，进行$\color{red}{(ii)\Rightarrow(i)}$中的变量替换后
+        \[
+            \begin{array}{ll}
+                &\operatorname{Arg}\min\{g(y):y\in\mathbb{R}^{n}\}\\
+                {}&=\{y = [y_1,\cdots, y_n]:(y_i=\dfrac{b_i}{\lambda_i},\textbf{if}\lambda_i>0);(y_i\in |\mathbb{R}^n\textbf{if}\lambda_i=0)\}
+            \end{array}
+        \]
+        故
+        \[
+            \operatorname{Arg}\min\{f(x):x\in \mathbb{R}^n\} = \left\{x = P^{\mathrm{T}}y:y\in\operatorname{Arg}\min\{g(y):y\in\mathbb{R}^{n}\}\right\}
+        \]
+        
+
+        $\color{red}{(iii)\Rightarrow(i)}$，显然成立。
+        
+        证毕！
+    \end{proof}
+    %------------------%
+    % ------ 10 ------ %
+    %------------------%
+    \item 设$A\in\mathbb{R}^{m\times n}$是一个秩为$r>0$的给定矩阵，$1\leq k\leq r$为给定的自然数.试求如下秩约束优化问题的解:
+    \[
+        \begin{array}{ll}
+            \operatorname{minimize}&\|A-X\|_F\\
+            \operatorname{subject\ to}&\operatorname{rank}X=k.
+        \end{array}
+    \]
+    \begin{solution}
+        $A = UDV^{\mathrm{T}}\Rightarrow U^{\mathrm{T}}AV = D$
+        根据矩阵Frobenius范数的酉不变性
+        \[
+            \begin{array}{ll}
+                \|A-X\|_F &= \|U^{\mathrm{T}}(A-X)V\|_F\\
+                &=\|D-U^{\mathrm{T}}XV\|_F\\
+            \end{array},
+        \]
+        令$Y = U^{\mathrm{T}}XV$上述优化问题可以转化为
+        \[
+            \begin{array}{ll}
+                \operatorname{minimize}&\|D-Y\|_F\\
+                \operatorname{subject\ to}&\operatorname{rank}Y=k.
+            \end{array},
+        \]
+        其中$D = \operatorname{diag} (\sigma_1,\cdots,\sigma_r)$，$\sigma_1\geq\sigma_2\geq\cdots\geq\sigma_r$。
+        易得，当$Y = \Sigma_k = \operatorname{diag} (\sigma_1,\cdots,\sigma_k,\cdots, 0)$时，达到最优解，此时
+        \[
+            X =  U\Sigma_kV^{\mathrm{T}}
+        \]
+    \end{solution}
+  \end{problemset}

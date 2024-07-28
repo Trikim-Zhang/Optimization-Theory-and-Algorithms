@@ -1,0 +1,165 @@
+\chapter{梯度下降法}
+\section{梯度法的描述}
+\subsection{迭代格式}
+本章介绍的梯度法将用于近似求解下述的无约束优化问题
+\begin{equation}\label{eq:optimizeWithoutConstraint}
+    \operatorname*{minimize}_{x\in\mathbb{R}^n}f(x),
+\end{equation}
+其中目标函数$f:\mathbb{R}^n\to \mathbb{R}$为连续可微的函数并假设我们可以计算其在任意一点$x$处的梯度$\nabla f(x)$。基于最优性条件，最优化问题~(\ref{eq:optimizeWithoutConstraint})~满足必要性条件$\nabla f(x) = 0$。从而将最优化问题转化为非线性方程组的求解，然后再所有可行解中找出目标函数值最小的解，即可得到最优化问题的最优解。但实际上，$\nabla f(x) = 0$的求解是非常困难的，因为它本质上需要计算梯度算子的逆算子，相对解一个逆问题。特别地，当$f$为二次函数时，梯度算子的逆算子对应矩阵的逆矩阵， 对应大规模问题而言，稠密矩阵的逆矩阵计算也是很困难的. Cauchy 当初提出梯度法的动机正是为了克服逆问题的求解困难而采取的一种正向计算（计算梯度）的方法来逐渐逼近问题的解。 具体而言，梯度法的基本格式为：
+\begin{equation}\label{eq:gradient}
+    x^{k+1}=x^k-\tau_k\cdot\nabla f(x^k),k\geq0,
+\end{equation}
+其中$\tau_k$为步长参数，$x^0\in\mathbb{R}^n$为给定的初始点。由于$-\nabla f(x^k)$为当前迭代点$x^k$的最速下降方向，当步长参数$\tau_k$落在某个足够小的区间$(0,\tau)$时，在更新点$x^{k+1}$出的函数值$f(x^{k+1})$必然减少，也即$f(x^{k+1})<f(x^k)$。因此，梯度法也通常称为梯度下降法。
+
+为了进一步看出迭代格式~(\ref{eq:gradient})~的内在机制，我们将其等价地写成二次优化问题最优解的形式
+\[
+    x^{k+1}:=\arg\min_{x}\{f_{k}(x):=\frac{1}{\tau_{k}}\|x-(x^{k}-\tau_{k}\cdot\nabla f(x^{k}))\|^{2}+f(x^{k})-\frac{\tau_{k}}{2}\|\nabla f(x^{k})\|^{2}\},
+\]
+其中添加的常数项$f(x^k)-\frac{\tau_k}2\|\nabla f(x^k)\|^2$是使目标函数$f_{k}(x)$凑成如下形式
+\[
+    f_{k}(x)=f(x^{k})+\langle\nabla f(x^{k}),x-x^{k}\rangle+\frac{1}{2\tau_{k}}\|x-x^{k}\|^{2}.
+\]
+基于该形式，我们可以看出梯度法本质上是求解一系列二次优化问题，它们的目标函数$f_k$是原目标函数$f$的二阶近似。不难预见，近似程度的好坏将决定梯度法的收敛性与收敛率。特别地，当$f$为凸的$L$-光滑函数时，$f_k$与$f$的近似程度可以被一个二次函数控制。事实上，由凸函数和$L$-光滑性的定义可知
+\[
+    f(x^k)+\langle\nabla f(x^k),x-x^k\rangle\leq f(x)\leq f(x^k)+\langle\nabla f(x^k),x-x^k\rangle+\frac{L}{2}\|x-x^k\|^2.
+\]
+上式同减$f_k$后可得
+\[
+    -\frac1{2\tau_k}\|x-x^k\|^2\leq f(x)-f_k(x)\leq(\frac L2-\frac1{2\tau_k})\|x-x^k\|^2.
+\]
+因此，$f(x)-f_k(x)$被二次函数$\|x-x^k\|^2$控制。下述的下降引理表明：只需目标函数$f$满足$L$-光滑性，就可通过控制步长参数的选取以保证梯度法生成的函数值序列下降.
+\begin{theorem}[基本下降引理]
+    假设目标函数$f$为满足$L$-光滑性条件：
+    \begin{equation}\label{eq:L-smooth}
+        f(y)\geq f(x) + \langle \nabla f(x),y-x \rangle + \frac{L}{2}\| y-x \|^2
+    \end{equation}
+    则梯度法格式~(\ref{eq:L-smooth})~生成的序列$\{x^k\}$满足如下下降性质：
+    \begin{equation}\label{eq:LowDown}
+        f(x^k)-f(x^{k+1})\geq \tau_k(1-\frac{L}{2}\tau_k)\| \nabla f(x^k) \|^2
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    首先，在光滑性条件~(\ref{eq:L-smooth})~中取$y = x^{k+1},x = x^k$可得
+    \[
+        f(x^{k+1})\leq f(x^k)+\langle\nabla f(x^k),x^{k+1}-x^k\rangle+\frac L2\|x^{k+1}-x^k\|^2.
+    \]
+    然后，将迭代式$x^{k+1} = x^k-\tau_k \cdot \nabla f(x^k)$待入上式的右边
+    得到
+    \[
+        \begin{array}{ll}
+            f(x^k)-f(x^{k+1})&\geq \langle \nabla f(x^k),\tau_k \nabla f(x^k)  \rangle -\frac{L}{2}\| -\tau_k \nabla f(x^k)  \|^2\\
+            & = \tau_k(1-\dfrac{L}{2}\tau_k)\|\nabla f(x^k)\|^2
+        \end{array}  
+    \]
+    证毕！
+\end{proof}
+\subsection{步长选取}
+梯度法迭代法~(\ref{eq:gradient})~中补偿参数$\tau_k$的设计直接影响到梯度法的收敛效率。若步长取得过于保守，每步迭代使函数值的下降量微乎其微，算法将收敛的非常缓慢；而若取得太过激进，单独迭代可能使函数值上升，算法将不稳定甚至不收敛。因此合理的步长应该介于保守和激进之间。此处，我们将介绍三种常见的选取策略。
+
+第一种是\textcolor{red}{常数步长策略}。其理论依据是下降关系~(\ref{eq:LowDown})~中右边的步长函数
+\[
+    h(\tau) :=\tau(1-\frac{L}{2}\tau)   
+\]
+一方面，为了保证单步迭代均能使函数值下降，我们要求$h(\tau)>0$，由于步长参数的非负性，可知$\tau\in(0,\tau)$，换言之在区间$(0,\frac{2}{L})$中任选常数步长均可保证函数值下降（梯度未消失之前）；另一方面，为了使单步迭代的函数值下降最多，我们可取
+\[
+    \tau_k:=\arg\max_{\tau\in(0,\frac{2}{L})}h(\tau)    
+\]
+此时常数步长$\tau_k\equiv \frac{1}{L}$，并取该步长的梯度法为最优常数步长梯度法。相应的，~(\ref{eq:LowDown})~式变为
+\begin{equation}\label{eq:optimizeConstantStep}
+    f(x^k) - f(x^{k+1}) = f(x^k) - f(x^k-\frac{1}{L}\nabla f(x^k))\geq \frac{1}{2L}\| \nabla f(x^k) \|^2
+\end{equation}
+改策略的局限在于目标函数的光滑常数$L$难以估计。
+
+第二种是\textcolor{red}{精确线搜索策略}。该策略尝试从当前点$x^k$出发，沿最速下降方向$-\nabla f(x^k)$前进，以求尽可能降低函数值。具体而言，
+\[
+    \tau_k\in\operatorname*{Arg}\min_{\tau>0}\{ g(\tau):=f(x^k-\tau\nabla f(x^k)) \}
+\]
+此时，我们需要在正区间上极小化单变量的连续可微函数$g(\tau)$或者求方程$g'(\tau) = 0$的正根。具体到$f$为二次函数是，$g(\tau)$是关于$\tau$的二次函数，而单变量的二次函数极小化问题可以解析地求解。对应一般情形，通常需要基于数值方法估计方程$g(\tau) = 0$的根。
+
+由于该策略的目标是搜索下降方向$-\nabla f(x^k)$上的最下函数值，因此精确线搜索的步长$\tau_k$必然满足
+\[
+    f(x^{k+1}) = f(x^k-\tau \nabla f(x^k))\leq f(x^k-\dfrac{1}{L}\nabla f(x^k))
+\]
+因而，结合~(\ref{eq:optimizeConstantStep})~可知精确线性搜索的梯度法满足与最优常数步长梯度法相同的下降性质
+\[
+    f(x) - f(x^{k+1})\geq f(x) - f(x^k - \dfrac{1}{L}\nabla f(x^k))\geq\dfrac{1}{2L}\| \nabla f(x^k) \|^2 
+\]
+
+第三种是\textcolor{red}{反向追踪线搜索策略}。该方法既不需要估计光滑常数$L$，也不需要求解单变量的最优化问题，因为在实际应用中更为常见。其设计的理论依据是$f$的$L$-光滑性条件，因为该条件可以保证当步长$\tau_k\leq \dfrac{1}{L}$时，必有
+\[
+    f(y) \leq f(x)+\langle \nabla f(x),y-x \rangle + \dfrac{1}{2\tau_k}\|y-x\|^2
+\]
+在上述中分别取$x= x^k,y = x^{k+1} = x^{k}-\tau_k \nabla f(x^k)$可得
+\begin{equation}\label{eq:backTrack}
+    f(x^{k+1})\leq f(x^k)-\frac{\tau}{2}\| \nabla f(x^k) \|^2
+\end{equation}
+下面尝试去掉$\tau_k$对于光滑常数$L$的依赖。为此给定一个$\tau_k$的初始估计值$\sigma>0$以及缩减参数$\beta\in (0,1)$。
+\begin{enumerate}
+    \item 将$\tau_k =\sigma$带入梯格式中，判断~(\ref{eq:backTrack})~是否成立
+    \item 若不成立，缩减步长$\tau_k = \beta\sigma$重复之前过程
+    \item 若成立，停止
+\end{enumerate}
+如此重复，由于$\beta\in (0,1)$，必然存在自然数$m$使得$\beta^m\leq \frac{1}{L}$使得~(\ref{eq:backTrack})~成立。此时，要么有$\tau_k = \sigma$要么$\frac{\tau_k}{\beta}>\frac{1}{L}$。因此
+\[
+    \tau_k\geq 2c:=\min\{ \sigma,\frac{\beta}{L} \}
+\]
+反向追踪线搜索梯度法成立如下下降性质：
+\begin{equation}\label{eq:backTrackResult}
+    f(x^k)-f(x^{k+1})\geq \frac{c}{2}\|\nabla f(x^{k})\|^2
+\end{equation}
+\section{收敛理论}
+判断梯度法的收敛性的三种度量标准
+\begin{enumerate}
+    \item 目标间隙 $f(x^k)-\bar{f}$
+    \item 梯度范数$\|f(x^k)\|$
+    \item 距离间隙$d(x^k,X*)$
+\end{enumerate}
+\subsection{基本收敛性质}
+\begin{theorem}
+    设$f:\mathbb{R}^n\to \mathbb{R}$满足$L$-光滑条件且有下下界，也即存在常数$\ell \in \mathbb{R}$，使得
+    \[
+        \ell < f(y)< f(x) + \langle \nabla f(x), y-x \rangle + \dfrac{L}{2}\|y-x\|^2
+    \]
+    令$\{x^k\}$为梯度法~(\ref{eq:gradient})~应用于$f$生成的序列，其中步长参数$\tau_k$可选为常数步长$\bar{\tau}\in(0,\frac{1}{L})$或按精确线搜索或backtracking线搜索。则有
+    \[
+        \lim\limits_{k\to \infty} =\| \nabla f(x^k) \| = 0   
+    \]
+    且
+    \[
+        \min_{k = 0,1,\cdots,T}\| \nabla f(x^k) \|^2\leq \dfrac{c_1}{T+1}
+    \]
+\end{theorem}
+\begin{proof}
+    由~(\ref{eq:backTrackResult})~可知序列$\{ f(x^K) \}$单调下降且有下界$\ell$。从而必为收敛序列，其极限记为$\bar{f}$。因而
+    \[
+        f(x^k)-f(x^{k+1})\to 0, k\to 0
+    \]
+    再结合可知
+    \[
+        \lim\limits_{k\to \infty} =\| \nabla f(x^k) \| = 0   
+    \]
+    成立。
+    现在从$k = 0,1,\cdots,T$求和
+    \[
+        \left\{
+            \begin{array}{c}
+                f(x^0) - f(x^{1})\geq c\|\nabla f(x^{0})\|^2\\
+                f(x^1) - f(x^{2})\geq c\|\nabla f(x^{1})\|^2\\
+                \vdots \\
+                f(x^T) - f(x^{T+1})\geq c\|\nabla f(x^{T})\|^2
+            \end{array}
+        \right.
+    \]
+    可得
+    \[
+        f(x^0) - f(x^{T+1})\geq c\sum\limits_{k =0}^{T}\|\nabla f(x^{k})\|^2
+    \]
+    又因为$f(x^{T+1})\geq \bar{f}$，于是
+    \[
+        \begin{array}{ll}
+            f(x^0)-\bar{f}& \geq c\sum\limits_{k = 0}^{T}\|\nabla f(x^{k})\|^2\\
+            &\geq c\cdot (T+1)\cdot \min\limits_{k = 0,1,\cdots,T}\|\nabla f(x^k) \|^2
+        \end{array}
+    \]
+    令$c_1=\frac{f(x^0)-\bar{f}}{c}$，即可推出$\min\limits_{k = 0,1,\cdots,T}\| \nabla f(x^k) \|^2\leq \dfrac{c_1}{T+1}$
+\end{proof}

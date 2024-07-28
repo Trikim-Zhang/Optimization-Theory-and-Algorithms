@@ -1,0 +1,269 @@
+\chapter{凸函数}
+\section{凸函数}
+我们引入上图的概念。设$f:\mathbb{R}^n\rightarrow \bar{\mathbb{R}}$，则$f$的上图（epigraph）定义为：
+\[
+    \operatorname{epi}(f):=\{ (x,\gamma)\in\mathbb{R}^{n}\times\mathbb{R}:f(x)\leq \gamma  \}
+\]
+而$f$的有效域（effective domain）定义为：
+\[
+    \operatorname{dom}(f):=\{ x\in\mathbb{R}^{n}:f(x)<+\infty \}
+\]
+不难看出，$f$的有效域为其上图在$\mathbb{R}^n$空间中的投影，下面基于上图的概念给出凸函数的现代定义。
+\begin{definition}[凸函数]
+    设$f:\mathbb{R}^n\rightarrow \bar{\mathbb{R}}$。若$\operatorname{epi}(f)\subset \mathbb{R}^n\times \mathbb{R}$为凸集，则称$f$为凸函数。若$-f$为凸的，则称$f$为凸函数。
+\end{definition}
+上述定义推广了第~\ref{chap:convexSet}~章中一维凸函数的定义. 事实上, 我们有凸函数的如下等价条件.
+\begin{theorem}
+    设$f:\mathbb{R}^{n}\to\mathbb{R}\cup\{+\infty\}$且$\operatorname{dom}(f)\neq \emptyset$。则$f$为凸的当且仅当对任意$x,y\in \mathbb{R}^n, 0<\alpha<1$，均有
+    \begin{equation}\label{eq:convexSetTheorem}
+        f(\alpha x+(1-\alpha)y)\leq\alpha f(x)+(1-\alpha)f(y).
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    先证明必要性。设$f$为凸函数并任取$x,y\in \mathbb{R}^n$，由定义可知$\operatorname{epi}(f)$为凸集。若$x,y\in\mathbb{R}^n$其中之一不属于$\operatorname{dom}(f)$，则(\ref{eq:convexSetTheorem})显然成立。故不妨设$x,y\in\operatorname{dom}(f)$，于是$\left.\left[\begin{array}{c}x\\f(x)\end{array}\right.\right]$和$\left.\left[\begin{array}{c}y\\f(y)\end{array}\right.\right]$均属于$\operatorname{epi}(f)$，从而其凸组合亦属于$\operatorname{epi}(f)$，也即
+    \begin{equation}\label{eq:convexSetTheoremProof}
+        \left.\left[
+            \begin{array}{c}
+                \alpha x+(1-\alpha)y\\
+                \alpha f(x)+(1-\alpha)f(y)
+            \end{array}
+            \right.\right]\in\operatorname{epi}(f).
+    \end{equation}
+    因而$f(\alpha x + (1-\alpha)y)\leq \alpha f(x) + (1-\alpha)f(y)$。
+    
+    反之，上式蕴含了~(\ref{eq:convexSetTheoremProof})~式，从而$\operatorname{epi}(f)$为凸集，故$f$为凸函数。证毕！
+\end{proof}
+\begin{remark}
+    \begin{enumerate}
+        \item 若(\ref{eq:convexSetTheorem})式为严格不等式，则称$f$为严格凸函数
+        \item 限制在凸集上的凸函数可拓展为全空间的凸函数
+        \item 若$f$为凸，则$\operatorname{dom}(f)$必为凸集
+    \end{enumerate}
+\end{remark}
+
+\begin{definition}
+    设$\Omega\subset \mathbb{R}^n$为凸集并设$f:\Omega\to(-\infty,+\infty]$为定义在$\Omega$上的拓展的实值函数。若对任意的$x,y\in\Omega$及$\alpha\in(0,1)$均有~(\ref{eq:convexSetTheorem})~式成立，则称$f$为$\Omega$上的凸函数。
+\end{definition}
+
+限制在凸集$\Omega$上的凸函数$f$可以延拓为全空间中的凸函数。事实上，可定义$\tilde{f}:\mathbb{R}^n\to (-\infty,+\infty]$为
+\[
+    \left.\tilde{f}(x):=\left\{
+        \begin{array}{ll}
+            f(x),&x\in\Omega;\\
+            +\infty,&x\notin\Omega.
+        \end{array}
+        \right.\right.
+\]
+则不难验证：
+\[
+    \begin{gathered}
+        \operatorname{dom}({\bar{f}}) =\operatorname{dom}(f) \\
+        \operatorname{epi}(\tilde{f}) =\operatorname{epi}(f). 
+    \end{gathered}
+\]
+由此可知，$f$的凸性等同于$\tilde{f}$的凸性。
+
+\begin{example}
+    下面介绍几类常见的简单凸函数
+    \begin{enumerate}[label=(\roman*)]
+        \item 放射函数：$f(x)=a^{\mathrm{T}}x+b$，其中$a\in\mathbb{R}^n,b\in\mathbb{R}$.
+        \item 范数函数：$f(x) = \|x\|$，其中$\|\cdot\|$为$\mathbb{R}^n$上的范数
+        \item 示性函数：$\left.\delta_\Omega(x)=\left\{\begin{array}{cc}0,&x\in\Omega\\+\infty,&x\notin\Omega\end{array}\right.\right.$，其中$\Omega\subset \mathbb{R}^n$为凸集
+        \item 距离函数:$d_{\Omega} = \min\limits_{z\in\Omega}\|x-z\|$，其中$\Omega\subset \mathbb{R}^n$为闭凸集
+    \end{enumerate}
+\end{example}
+\begin{proof}
+    先应用~(\ref{eq:convexSetTheorem})~验证（ii）与（iv）。对任意的$x,y\in\Omega$及$\alpha\in(0,1)$，由范数的三角不等式及齐次性可进行如下推导：
+    \[
+        \begin{aligned}
+            f(\alpha x+(1-\alpha)y)& =\|\alpha x+(1-\alpha)y\|  \\
+            &\leq\|\alpha x\|+\|(1-\alpha)y\| \\
+            &=\alpha\|x\|+(1-\alpha)\|y\| \\
+            &=\alpha f(x)+(1-\alpha)f(y).
+        \end{aligned}
+    \]
+    从而可知范数函数$f(x) = \|x\|$为凸函数。下证（iv）。设$x,y\in\mathbb{R}^n$及$\alpha\in(0,1)$，并记$v = \prod_{\Omega}(x),w = \prod_{\Omega}(y)$，则由$\Omega$的凸性以及投影的定义可知
+    \[
+        \alpha v + (1-\alpha)w\in \Omega
+    \]
+    且$d_{\Omega}(x)=\|x-v\|,d_{\Omega}(y)=\|y-w\|.$据此，
+    \[
+        \begin{aligned}
+            d_\Omega(\alpha x+(1-\alpha)y)& =\min_{z\in\Omega}\|\alpha x+(1-\alpha)y-z\|  \\
+            &\leq\|\alpha x+(1-\alpha)y-\alpha v-(1-\alpha)w\| \\
+            &\leq\alpha\|x-v\|+(1-\alpha)\|y-w\| \\
+            &=\alpha d_\Omega(x)+(1-\alpha)d_\Omega(y).
+        \end{aligned}
+    \]
+    从而距离函数$d_{\Omega}(x)$必为凸函数。
+
+    最后，（i）易证而（iii）成立是因为$\operatorname{epi}(\delta_{\Omega}) = \Omega\times \mathbb{R}_{+}$为凸集。
+\end{proof}
+
+凸函数的定义只依赖于函数值的信息. 但若给定的函数连续可微，则我们可以分别基于函数的一阶信息（梯度）和二阶信息（海森矩阵）来判断函数的凸性.
+\begin{theorem}
+    设$f:\Omega\to \mathbb{R}$为连续可微的函数，其中$\Omega\subset \mathbb{R}^n$为开凸集，则$f$为凸函数当且仅当如下条件之一成立：
+    \begin{enumerate}
+        \item 当任意$x,y\in\Omega$均有
+        \begin{equation}\label{eq:convexSetEquivalence1}
+            \langle x-y,\nabla f(x)-\nabla f(y)\rangle\geq0;
+        \end{equation}
+        \item 当任意$x,y\in\Omega$均有
+        \begin{equation}\label{eq:convexSetEquivalence2}
+            f(y)\geq f(x)+\langle\nabla f(x),y-x\rangle;
+        \end{equation}
+        \item 若$f$二阶连续可微时，
+        \begin{equation}\label{eq:convexSetEquivalence3}
+            \nabla^2f(x)\succeq 0,\forall x\in \Omega
+        \end{equation}
+    \end{enumerate} 
+\end{theorem}
+\section{次微分理论}
+\subsection{次微分与次梯度}
+下面，我们给出凸函数次梯度和次微分的定义。
+\begin{definition}
+    设$f:\mathbb{R}^n\to\mathbb{R}\cup\{+\infty\}$为凸函数且$\operatorname{dom}(f)\neq \emptyset$并令$x\in\operatorname{dom}(f)$。若向量$g\in \mathbb{R}^n$满足
+    \[
+        f(y)\geq f(x) + \left\langle g, y-x \right\rangle,\forall y\in\mathbb{R}^n
+    \]
+    则称$g$为$f$在$x$处的梯度。函数$f$在$x$处的全体次梯度构成的集合称为$f$在$x$处的次微分，记为$\partial f(x)$。
+\end{definition}
+下例指出：并非任意凸函数在其有效域$\operatorname{dom}(f)$中总可微。
+\begin{example}
+    定义$f:\mathbb{R}\to (-\infty,+\infty]$为
+    \[
+        \left.f(x)=\left\{
+            \begin{array}{cc}
+                -\sqrt{x},&x\geq0,\\
+                \infty,&\text{否则}.
+            \end{array}
+        \right.\right.
+    \]
+    往证$f$在$x = 0$处的次梯度不存在。反正存在$g\in \partial f(0)$。则
+    \[
+        f(y)\geq f(0)+g(y-0),\forall y>0
+    \]
+    也即
+    \[
+        -\sqrt{y}\geq gy,\ \forall y>0
+    \]
+    从而
+    \[
+        g\sqrt{y}\leq -1,\ \forall y>0
+    \]
+    令$y\to 0_+$可得$0\geq -1$矛盾！从而$\partial f(0) = \emptyset$
+\end{example}
+尽管如此，当限定到$f$有效域的内点时，次梯度总存在，也即有关系式：
+\begin{equation}\label{eq:intPoint}
+    \operatorname{int}\operatorname{dom}(f)\subseteq \operatorname{dom}(\partial f)
+\end{equation}
+\begin{theorem}
+    设$f:\mathbb{R}^n\to \mathbb{R}\cup \{+\infty\}$为凸函数其$\operatorname{dom}(f)\neq \emptyset$，则对任意$x\in \operatorname{int}\operatorname{dom}(f)$及$d\in\mathbb{R}^n$均为有
+    \[
+        f^{\prime}(x;d)=\max \{ \langle g,d \rangle:g\in \partial f(x) \}
+    \]
+    \begin{remark}
+        条件$x\in \operatorname{int}\operatorname{dom}(f)$可弱化为$x\in\operatorname{dom}(f)$
+    \end{remark}
+\end{theorem}
+\begin{proof}
+    由次梯度不等式可知，对$\forall \in\partial f(x)$均有
+    \[
+        \begin{array}{ll}
+            f^{\prime}(x;d) &= \lim\limits_{\tau\to 0_+}\dfrac{f(x+\tau d)-f(x)}{\tau}\\
+            &\geq \lim\limits_{\tau\to 0_+}\langle g,d \rangle\\
+            &=\langle g,d\rangle
+        \end{array}
+    \]
+    故
+    \[
+        f^{\prime}(x;d)\geq \max\{ \langle g,d\rangle:g\in \partial f(x) \}
+    \]
+\end{proof}
+\subsection{最速下降方向}
+再给出次微分集中下降的次梯度方向前，我们先回顾作为最速下降方向的负梯度方向。假设$\nabla f(x)\neq 0$。固定方向$d\in \mathbb{R}^n$且$\|d\| = 1$。考虑沿此方向函数值的变化。由可微的定义可知
+\[
+    f(x+\tau d) = f(x) + \tau \nabla f(x)^{\mathrm{T}}d + o(\tau),\ \tau>0
+\]
+当$\nabla f(x)^{\mathrm{T}}d<0 $时，由于$\frac{o(\tau)}{\tau}\to 0,\tau\to 0_{+}$可知，存在$\varepsilon >0$，使得当$0<\tau<\varepsilon$时，
+\[
+    \dfrac{o(\tau)}{\tau}\leq -\dfrac{\nabla f(x)^{\mathrm{T}}d}{2}
+\]
+此时
+\[
+    f(x+\tau d)-f(x)\leq \dfrac{\tau}{2}\cdot \nabla f(x)^{\mathrm{T}}d< 0
+\]
+上式表明，从$x$点眼$d$方向出发，当步长$\tau <\varepsilon$时，
+\[
+    f(x+\tau d)<f(x)
+\]
+因此，称满足条件$\nabla f(x)^{\mathrm{T}}d$的方向为下降方向。而称下降最快或$\nabla f(x)^{\mathrm{T}}d$最小的方向为最速下降方向，也即
+\[
+    \begin{array}{c}
+        \hat{d} = \arg\min \{\nabla f(x)^{\mathrm{T}}d\}\\
+        \text{s.t.} \|d\|=1
+    \end{array} 
+\]
+则$d = -\frac{\nabla f(x)}{\|\nabla f(x)\|}$。事实上，有Cauchy-Schwarz不等式
+\[
+    |\nabla f(x)^{\mathrm{T}} d|\leq \|\nabla f(x) \|\cdot \|d \|\leq \|\nabla f(x) \|
+\]
+可知
+\[
+    -\|\nabla f(x) \| \leq \nabla f(x)^{\mathrm{T}} d \leq \|\nabla f(x) \|
+\]
+从而$\hat{d} = \frac{\nabla f(x)}{\|\nabla f(x)\|}$可取得下界$-\|\nabla f(x) \|$。
+对一般的凸函数（不一定可微），我们用次线性的方向导数$f^{\prime}(x;d)$代替线性项$\nabla f(x)^{\mathrm{T}}d$以类似地定义最速下降方向。
+\begin{theorem}
+    设$f:\mathrm{R}^n\to \mathbb{R}\cup \{+\infty\}$在$x$处次可微且$0\notin \partial f(x),x\in\operatorname{int}\operatorname{dom} (f)$。定义
+    \[
+        \Lambda = \arg\min\{ f^{\prime}(x;d):\|d\|\leq 1 \}
+    \]
+    为最速下降方向集。则
+    \[
+        \hat{d} = -\dfrac{g}{\|g\|}\in \Lambda
+    \]
+    其中$g = \arg\min\{ \|z\|:z\in\partial f(x) \}$
+\end{theorem}
+\begin{problemset}
+    \item 设$f$为凸函数且存在$\beta_0\in \mathbb{R}$使得$M_{\beta_0}:=\{x:f(x)<\beta_0\}\neq \emptyset$且有界。证明：$\forall \beta \in \mathbb{R}$，$M_{\beta}$均为有界集。
+    \begin{proof}
+        对于$\beta\leq \beta_0$，显然$M_{\beta}$为有界集。
+
+        不妨设$\beta>\beta_0$，令$f(x^*) = \alpha <f(x)\ \forall x\in\mathbb{R}^n$。
+
+        令$r = \max\limits_{x\in M_{\beta_0}}$，则对$\forall x\|x-x^*\| = r,f(x)\geq \beta_0$
+        所以对$\forall x\in M_{\beta}$
+        \[
+            \begin{array}{ll}
+                \beta_0&\leq f(x^* + \dfrac{r}{\|x-x^*\|}(x-x^*)) = f(\dfrac{r}{\|x-x^*\|}x + (1-\dfrac{r}{\|x-x^*\|})x^*)\\
+                &\geq \dfrac{r}{\|x-x^*\|}f(x) + (1-\dfrac{r}{\|x-x^*\|})f(x^*)\\
+                &<\dfrac{r}{\|x-x^*\|}\beta + (1-\dfrac{r}{\|x-x^*\|})\beta_0\\
+            \end{array}
+        \]
+        因此，$\|x-x^*\|\leq r\cdot \dfrac{\beta-\alpha}{\beta_0-\alpha}$
+        $M_{\beta}$有界。
+
+        证毕！
+    \end{proof}
+    \item 对$x\in\mathbb{R}^n$，用$x_{[i]}$表示$x$中第$i$大的分量：
+    \[
+        x_{[1]}\geq x_{[2]}\geq \cdots \geq x_{[n]}
+    \]
+    证明：对任意的$1\leq k\leq n$，函数
+    \[
+        f_k(x) = \sum\limits_{j = 1}^{k}x_{[j]}
+    \]
+    为凸函数
+    \begin{proof}
+        对$x^1 = (x_1^1,x_2^1,\cdots, x_n^1)', x^2 = (x_1^2,x_2^2,\cdots, x_n^2)'$，$\forall \alpha \in (0,1)$，令$x^{\alpha} = \alpha x^1 + (1-\alpha)x^2$，设$x_{[i]}^{\alpha} = x_{rj}^{\alpha}$，则
+        \[
+            \begin{array}{ll}
+                f_{k}(x^{\alpha})&=\sum\limits_{j = 1}^{k}x_{[j]}^{\alpha} = \sum\limits_{j = 1}^{k}x_{rj}^{\alpha} = \sum\limits_{j = 1}^{k}(\alpha x_{rj}^{1} + (1-\alpha)x_{rj}^{2})\\
+                &=\alpha\sum\limits_{j = 1}^{k}x_{rj}^{1} + (1-\alpha)\sum\limits_{j = 1}^{k}x_{rj}^{2}\\
+                &\leq \alpha f_{k}(x^1) + (1-\alpha) f_{k}(x^2) 
+            \end{array}
+        \]
+    \end{proof}
+    证毕！
+\end{problemset}

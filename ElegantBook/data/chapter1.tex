@@ -1,0 +1,130 @@
+\chapter{凸集与投影}\label{chap:convexSet}
+\section{凸集}
+\begin{definition}[凸集]
+    设$X$为$\mathbb{R}^n$中的非空子集。若对任意的$x,y\in X$，以及参数$\alpha\in(0,1)$均有
+    \begin{equation}\label{eq:convexSetDefinition}
+        \alpha x + (1-\alpha)y\in X,
+    \end{equation}
+    则称$X$为$\mathbb{R}^n$中的凸集。我们约定空集$\emptyset$为凸集。
+\end{definition}
+\begin{example}
+    下述集合均为凸集
+    \begin{enumerate}
+        \item 仿射线$I:=\{\tau x^{1}+(1-\tau)x^{2}:\tau\in\mathbb{R}\}$，其中$x^{1},x^{2}\in\mathbb{R}^{n},x^{1}\neq x^{2}$给定
+        \item 超平面$H:=\{x\in\mathbb{R}^{n}:\langle a,x\rangle=b\}$，其中$a\in\mathbb{R}^{n}\backslash\{0\},b\in\mathbb{R}$
+        \item 半空间 $H^{-}:=\{x\in\mathbb{R}^{n}:\langle a,x\rangle\subseteq b\}$，其中$a\in\mathbb{R}^{n}\backslash\{0\},b\in\mathbb{R}$
+        \item 范数球 $B:=\{x\in\mathbb{R}^{n}:||x-a||\leq b\}$，其中$a\in\mathbb{R}^{n},b> 0.$
+        \item 闭椭球 ${\tilde{B}}:=\{x\in\mathbb{R}^{n}:x^{T}Q x+2b^{T}x+c\leq0\}$，$Q\in\mathbb{R}^{n\times n}$半正定，$b\in\mathbb{R}^{n},c\in\mathbb{R}.$
+        \item 半正定矩阵集 $H_{+}:=\{A\in\mathbb{R}^{n\times n}:\langle x,A x\rangle\geq0,\forall x\in\mathbb{R}^{n}\}.$
+    \end{enumerate}
+\end{example}
+\begin{proof}
+    先证明仿射线的凸性。在仿射线$I$中任取两点：$x = \tau_1 x^1+(1-\tau_1)x^2,\ y = \tau_2 x^1+(1-\tau_2)x^2$。对任意的参数$\forall \alpha\in(0,1)$。我们进行如下推导：
+    \[
+        \begin{aligned}
+            \alpha x+(1-\alpha)y& =\alpha_{1}\tau_{1}x^{1}+\alpha(1-\tau_{1})x^{2}+(1-\alpha)\tau_{2}x^{1}+(1-\alpha)(1-\tau_{2})x^{2}  \\
+            &=(\alpha\tau_1+(1-\alpha)\tau_2)x^1+[1-(\alpha\tau_1+(1-\alpha)\tau_2)]x^2 \\
+            &=\tau_{3}x^{1}+(1-\tau_{3})x^{2}\in I,
+        \end{aligned}
+    \]
+    其中$\tau_3 = \alpha\tau_1+(1-\alpha)\tau_2$。因此据凸集定义可知仿射线$I$为凸集。
+
+    下面证明超平面的凸性。任取$x,\ y\in H,\ \alpha\in(0,1)$，则由内积的线性性可知
+    \[
+        \langle a,\alpha x+(1-\alpha)y\rangle=\alpha\langle a,x\rangle+(1-\alpha)\langle a,y\rangle=b.
+    \]
+    因此$\alpha x+(1-\alpha)y\in H$，从而超平面为凸集。半空间$H^{-}$和半正定矩阵集$H_+$的凸性可类似的证明。
+
+    先证范数球的凸性。任取$x,y\in B,\ \alpha\in(0,1)$，则由范数的三角不等式可知
+    \[
+        \begin{aligned}
+            \|(\alpha x+(1-\alpha)y)-a\|& =\|\alpha(x-a)+(1-\alpha)(y-a)\|  \\
+            &\leq\alpha\|x-a\|+(1-\alpha)\|y-a\| \\
+            &\leq\alpha b+(1-\alpha)b=b.
+        \end{aligned}
+    \]
+    因此，$\alpha x+ (1-\alpha)y\in B$，从而范数球为凸集。
+
+    最后证闭椭球的凸性。由$Q$为半正定矩阵可知存在矩阵$\Gamma$使得$Q = \Gamma^{\mathrm{T}}\Gamma$。任取$x,y\in \tilde{B},\alpha\in(0,1)$，则有
+    \[
+        \begin{aligned}
+            \relax [\alpha x+(1-\alpha)y]^{\mathrm{T}}Q[\alpha x& +(1-\alpha)y]+2b^{\mathrm{T}}[\alpha x+(1-\alpha)y]+c  \\
+            &=\alpha(x^\mathrm{T}Qx+2b^\mathrm{T}x+c)+(1-\alpha)(y^\mathrm{T}Qy+2b^\mathrm{T}y+c) \\
+            &+\alpha(1-\alpha)(xQ^\mathrm{T}y+y^\mathrm{T}Qx-x^\mathrm{T}Qx-y^\mathrm{T}Qy) \\
+            &\leq\alpha(1-\alpha)(x^\mathrm{T}Qy+y^\mathrm{T}Qx-x^\mathrm{T}Qx-y^\mathrm{T}Qy) \\
+            &=-\alpha(1-\alpha)\|\Gamma x-\Gamma y\|^2\leq0.
+        \end{aligned}
+    \]
+\end{proof}
+\begin{problemset}
+    %------------------%
+    % ------ 1 ------ %
+    %------------------%
+    \item 证明下述集合为非凸的
+    \[
+        A = \{x\in \mathbb{R}^2:x_1^2-x_2^2+x_1+x_2\leq 4\}
+    \]
+    \begin{proof}
+        存在$a = (2,2),\ b = (2,-1)$，满足
+        \[
+            \begin{array}{c}
+                2^2-2^2+2-2 \leq 4\\
+                2^2-(-1)^2+2-(-1) \leq 4
+            \end{array}
+        \]
+        有$\alpha = \frac{1}{2}$，使得$y = \alpha a + (1-\alpha)b = (2,0.5)$
+        \[
+            2^2-(0.5)^2+2-(0.5) = 5.25 > 4
+        \]
+        即$y = \alpha a + (1-\alpha)b\notin A$
+
+        证毕！
+    \end{proof}
+    %------------------%
+    % ------ 2 ------ %
+    %------------------%
+    \item 证明$\operatorname{conv}\{e_1,e_2,-e_1,-e_2\} = \{x\in \mathbb{R}^2: \|x\|_1\leq 1\}$。其中$e_1 = (1,0)^{\mathrm{T}},e_2 = (0,1)^{\mathrm{T}}$
+    \begin{proof}
+        首先我们证明$\operatorname{conv}\{e_1,e_2,-e_1,-e_2\}\subseteq \{x\in \mathbb{R}^2: \|x\|_1\leq 1\}$。
+
+        假设$y\in \operatorname{conv}\{e_1,e_2,-e_1,-e_2\}$，即存在$\lambda_i\geq 0$，满足$\sum_{i = 1}^{4} \lambda_i = 1$且
+        \[
+            \begin{array}{ll}
+                y &=\lambda_1e_1+\lambda_2e_2+\lambda_3(-e_1)+\lambda_4(-e_2)\\
+                &=(\lambda_1-\lambda_3)e_1+(\lambda_2-\lambda_4)e_2
+            \end{array}
+        \]
+        有
+        \[
+            \begin{array}{ll}
+                \|y\|_1 &= |\lambda_1-\lambda_3| + |\lambda_2-\lambda_4|\\
+                &\leq |\lambda_1+\lambda_3| + |\lambda_2+\lambda_4|\\
+                &\leq \lambda_1+\lambda_3 + \lambda_2+\lambda_4 = 1
+            \end{array}  
+        \]
+        接下来我们证明$\{x\in \mathbb{R}^2: \|x\|_1\leq 1\}\subseteq \operatorname{conv}\{e_1,e_2,-e_1,-e_2\}$
+
+        假设有$y = (y_1,y_2)\in \{x\in \mathbb{R}^2: \|x\|_1\leq 1\}$，满足$|y_1|+|y_2|\leq 1$，那么有
+        \[
+            \begin{array}{ll}
+                y &= y_1e_1 + y_2e_2\\
+                &=ae_1+be_2-ce_1-de_2
+            \end{array}
+        \]
+        满足
+        \[
+            \left\{
+                \begin{array}{l}
+                    a+b+c+d = 1\\
+                    a-c = y_1\\
+                    b-d = y_2\\
+                    a,b,c,d\in(0,1)
+                \end{array}
+            \right.
+        \]
+        有解。
+
+        综上所述，$\operatorname{conv}\{e_1,e_2,-e_1,-e_2\} = \{x\in \mathbb{R}^2: \|x\|_1\leq 1\}$。
+        证毕！
+    \end{proof}
+\end{problemset}

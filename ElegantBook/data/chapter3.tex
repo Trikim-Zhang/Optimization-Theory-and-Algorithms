@@ -1,0 +1,78 @@
+\chapter{最优化条件与对偶}
+\section{最优化条件}
+\subsection{无约束优化情形}
+首先给出极小点的定义。
+\begin{definition}[极小点]
+    设$f:\mathbb{R}^n\to\bar{\mathbb{R}},X\subset\mathbb{R}^n$。若$\hat{x}\in X$满足条件：存在$\varepsilon >0$，使得$f(y)\geq f(\hat{x}),\forall y\in X$且$\|y-\hat{x}\|\leq \varepsilon$，则称$\hat{x}$为$f$在$X$上的局部极小点。若$f(y)\geq f(\hat{x})$对任意$y\in X$恒成立。则称$\hat{x}$为$f$在$X$上的全局极小点。
+\end{definition}
+\begin{theorem}
+    设$f:\mathbb{R}^n\to\bar{\mathbb{R}}$在$\hat{x}$处可微，若$\hat{x}$是$f$在$\mathbb{R}^n$上的局部极小点，则有$\nabla f(\hat{x})=0$；若假设$f$二阶连续可微，则还有$\nabla^{2}f(\hat{x})\succeq 0$
+\end{theorem}
+\begin{proof}
+    反设$\nabla f(\hat{x})\neq 0$，由$f$在$\hat{x}$处可微知
+    \[
+        f(y) = f(\hat{x}) + \langle \nabla f(\hat{x}),y-\hat{x} \rangle + o(\|y-\hat{x}\|)
+    \]
+    考虑$y(\tau) = \hat{x}-\tau\cdot \nabla f(\hat{x}),\tau>0$，带入上式可得
+    \begin{equation}\label{eq:firstDerivate}
+        f(y(\tau))=f(\hat{x})-\tau\cdot\|\nabla f(\hat{x})\|^2+o(\tau).
+    \end{equation}
+    由$\lim_{\tau\to 0_+}\frac{o(\tau)}{\tau} = 0$知存在$\tau_0>0$使得当$0<\tau<\tau_0$，
+    \[
+        \dfrac{o(\tau)}{\tau}<\dfrac{1}{2}\|\nabla f(\hat{x})\|^2
+    \]
+    于是由~(\ref{eq:firstDerivate})~知$ f(y(\tau))<f(\hat{x})-\frac{\tau}{2}\|\nabla f(\hat{x})\|^2<f(\hat{x}). $矛盾！
+
+    若$f$在$\hat{x}$处二阶可微，则
+    \begin{equation}\label{eq:secondDerivative}
+        \begin{aligned}
+            f(y)& =f(\hat{x})+\langle\nabla f(\hat{x}),y-\hat{x}\rangle+\frac12(y-\hat{x})^T\nabla^2f(\hat{x})(y-\hat{x})+o(\|y-\hat{x}\|^2)  \\
+            &=f(\hat{x})+\frac12(y-\hat{x})^T\nabla^2f(\hat{x})(y-\hat{x})+o(\|y-\hat{x}\|^2).
+        \end{aligned}
+    \end{equation}
+    反设$\nabla^2f(\hat{x})\prec 0$，固定非零向量$d\in\mathbb{R}^n$并考虑
+    \[
+        y(\tau)=\hat{x}+\tau d.
+    \]
+    将其代入~(\ref{eq:secondDerivative})~式可得
+    \[
+        f(y(\tau))=f(\hat{x})+\frac{\tau^{2}}{2}d^{T}\nabla^{2}f(\hat{x})d+o(\tau^{2}).
+    \]
+    类似的，存在$\tau>0$，使得
+    \[
+        o(\tau^2)<-\frac{\tau}{4}d^T\nabla^2f(\hat{x})d.
+    \]
+    从而
+    \[
+        f(y(\tau))<f(\hat{x})+\frac{\tau^{2}}{4}d^{T}\nabla^{2}f(\hat{x})d<f(\hat{x}).
+    \]
+    矛盾！
+\end{proof}
+\begin{theorem}
+    设$f:\mathbb{R}^n\to \bar{\mathbb{R}}$为正规凸函数，以下结论成立
+    \begin{enumerate}[label=(\roman*)]
+        \item 若$\hat{x}$为$f$的局部极小，则$\hat{x}$也为$f$的全局极小点，且
+        \begin{equation}\label{eq:zeroInPartial}
+            0\in \partial f(\hat{x})
+        \end{equation}
+        \item 若~(\ref{eq:zeroInPartial})~成立，则$\hat{x}$为$f$的全局极小点
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    \begin{enumerate}[label=(\roman*)]
+        \item 设$\hat{x}$为$f$的局部极小点，对任意固定的$y\in\mathbb{R}^n$，必存在$1>\alpha_0>0$，使得当$0<\alpha<\alpha_0$时，
+        \[
+            \begin{array}{ll}
+                f(\hat{x}) & \leq f(\hat{x} + \alpha(y-\hat{x}))\\
+                & = f(\alpha y+(1-\alpha)\hat{x})\\
+                & \leq \alpha f(y) + (1-\alpha)f(\hat{x})
+            \end{array}
+        \]
+        从而$f(\hat{x})\leq f(y)$，可知$\hat{x}$为$f$的全局极小点，进而
+        \begin{equation}\label{eq:fGeqHatx}
+            f(y)\geq f(\hat{x}) + \left\langle 0,y-\hat{x} \right\rangle,\forall y \in\mathbb{R}^n
+        \end{equation}
+        因此，$0\in\partial f(\hat{x})$
+        \item 当~(\ref{eq:fGeqHatx})~式成立，~(\ref{eq:zeroInPartial})~式必成立，从而$\hat{x}$为$f$的全局极小点。证毕！
+    \end{enumerate}
+\end{proof}
